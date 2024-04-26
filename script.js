@@ -57,6 +57,6 @@ const fetchWeather = () => {
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
-      currentTemp.innerHTML = currentTemp.innerHTML + result.current.temperature_2m;
+      currentTemp.innerHTML = `Current Temprature: ${result.current.temperature_2m}`;
     });
 };
