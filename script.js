@@ -35,11 +35,13 @@ const fetchLocation = () => {
     (position) => {
       longitude = position.coords.longitude;
       latitude = position.coords.latitude;
+      console.log(position.coords);
       let loc = new Microsoft.Maps.Location(latitude, longitude);
       let pin = new Microsoft.Maps.Pushpin(loc);
       map.entities.push(pin);
       map.setView({ center: loc, zoom: 15 });
       loading.style.display = "none";
+      fetchWeather();
     },
     (error) => {
       console.log(error.message);
@@ -48,3 +50,13 @@ const fetchLocation = () => {
 };
 
 getLocation.addEventListener("click", fetchLocation);
+
+const fetchWeather = () => {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+      currentTemp.innerHTML = currentTemp.innerHTML + result.current.temperature_2m;
+    });
+};
